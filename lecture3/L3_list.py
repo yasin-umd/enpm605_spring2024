@@ -145,7 +145,8 @@
 # fruits.clear()  # []
 
 # # ----Slide 19 ---- #
-# letters = ["a", ["bb", ["ccc", "ddd"], "ee", "ff"], "g"]
+#letters = ["a", ["bb", ["ccc", "ddd"], "ee", "ff"], "g"]
+#print(letters[1][1][1])
 
 
 # # ----Slide 20 ---- #
