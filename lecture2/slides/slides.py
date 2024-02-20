@@ -3,7 +3,7 @@ import sys
 # ----------------
 # Slide 19
 # ----------------
-print()
+# print()
 # print("Welcome", "to ENPM", 605)
 # print("Welcome", "to ENPM", 605)
 # print("Welcome", "to ENPM", 809, "E", sep="***")
@@ -283,8 +283,8 @@ print()
 # ----------------
 # Slide 54
 # ----------------
-quote = "Learn Python, be happy!"
-print(quote[-12:-18:-1])
+# quote = "Learn Python, be happy!"
+# print(quote[-12:-18:-1])
 # a = "h" * 4097
 # b = "h" * 4097
 # print(id(a), id(b))
@@ -326,3 +326,9 @@ print(quote[-12:-18:-1])
 # print(c is d)  # True
 # print(a is d)  # True
 # print(a is e)  # True
+
+print(3//2)  # 1
+print(-3//2)
+
+a, b = 200000000000000000000000000000, 200000000000000000000000000000
+print(a is b)
