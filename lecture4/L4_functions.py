@@ -377,12 +377,16 @@
 # # --     SLIDE 44    -- #
 # # %%%%%%%%%%%%%%%%%%%%% #
 
-# def edit_inputs(fruits, animals, age):
-#     fruits.append("cherry")
-#     fruits[0] = "mango"
-#     fruits = ["quince", "pear"]
-#     animals = ["elephant"]
-#     age += 1
+def edit_inputs(fruits, animals, age):
+    # fruits.append("cherry")
+    # fruits[0] = "mango"
+    # fruits = ["quince", "pear"]
+    # animals = ["elephant"]
+    # age += 1
+    
+#     fruits[0:] = ["quince", "pear"]
+#     animals[0:] = "elephant"
+#     del animals[1]
 
 
 # fruits = ["apple", "banana"]
