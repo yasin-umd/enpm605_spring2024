@@ -27,7 +27,9 @@ robot_position = [2, 3]  # [row, column]
 robot_orientation = "up"
 
 # Define the obstacles' positions
-obstacle_positions = [[1, 1], [2, 2], [3, 3]]
+#obstacle_positions = [[1, 1], [2, 2], [3, 3]]
+# Define a empty list for obstacles
+obstacle_positions: list[list] = list(list())
 
 # Define the goal position
 goal_position = [3, 2]
