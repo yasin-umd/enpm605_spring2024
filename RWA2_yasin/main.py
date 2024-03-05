@@ -5,10 +5,8 @@ from maze import print_maze
 from sys import exit
 import robot as rbt
 
-
 #This color dictionary is used to set the color for terminal texts.
 TEXT_COLOR = {"danger" : "\033[91m", "reset" : "\033[0m"}
-
 
 def main():
     
