@@ -326,3 +326,288 @@
 # print(callable(function_example))  # True
 # print(callable(f))  # True
 # print(callable(add))  # True
+
+# # %%%%%%%%%%%%%%%%%%%%% #
+# # --     SLIDE 39    -- #
+# # %%%%%%%%%%%%%%%%%%%%% #
+# def decorate(original_function):
+#     def wrap_decorate():
+#         print("~*" * 10)
+#         original_function()
+#         print("~*" * 10)
+
+#     return wrap_decorate
+
+
+# def display_hello():
+#     print("Hello")
+
+
+# # Applying the decorator to display_hello()
+# decorated_hello = decorate(display_hello)
+# display_hello()  # calls display_hello()
+# print()
+# decorated_hello()  # calls wrap_decorate()
+
+# # %%%%%%%%%%%%%%%%%%%%% #
+# # --     SLIDE 40    -- #
+# # %%%%%%%%%%%%%%%%%%%%% #
+# def decorate(original_function):
+#     def wrap_decorate():
+#         print("~*" * 10)
+#         original_function()
+#         print("~*" * 10)
+
+#     return wrap_decorate
+
+
+# @decorate
+# def display_hello():
+#     print("Hello")
+
+
+# display_hello()  # calls wrap_decorate()
+
+# # %%%%%%%%%%%%%%%%%%%%% #
+# # --     SLIDE 42    -- #
+# # %%%%%%%%%%%%%%%%%%%%% #
+# def decorate(original_function):
+#     def wrap_decorate():
+#         print("~*" * 10)
+#         original_function()
+#         print("~*" * 10)
+
+#     return wrap_decorate
+
+
+# @decorate
+# def greet(name=None):
+#     if name is None:
+#         print("Hello, Guest!")
+#     else:
+#         print(f"Hello, {name}!")
+
+
+# greet(
+#     "Alice"
+# )  # TypeError: wrap_decorate() takes 0 positional arguments but 1 was given
+
+
+# # %%%%%%%%%%%%%%%%%%%%% #
+# # --     SLIDE 43    -- #
+# # %%%%%%%%%%%%%%%%%%%%% #
+# def decorate(original_function):
+#     def wrap_decorate(*args):
+#         print("~*" * 10)
+#         original_function(*args)
+#         print("~*" * 10)
+
+#     return wrap_decorate
+
+
+# @decorate
+# def greet(name=None):
+#     if name is None:
+#         print("Hello, Guest!")
+#     else:
+#         print(f"Hello, {name}!")
+
+
+# greet("Alice")
+# greet()
+
+# # %%%%%%%%%%%%%%%%%%%%% #
+# # --     SLIDE 44    -- #
+# # %%%%%%%%%%%%%%%%%%%%% #
+# def double_number(original_function):
+#     def wrap_double_number(*args):
+#         original_function(*args) * 2
+
+#     return wrap_double_number
+
+
+# @double_number
+# def multiply(a, b):
+#     print(f"Multiplying {a} and {b}")
+#     return a * b
+
+
+# @double_number
+# def subtract(a, b):
+#     print(f"Subtracting {b} from {a}")
+#     return a - b
+
+
+# print(multiply(2, 3))  # 12
+# print(subtract(10, 3))  # 14
+
+# # %%%%%%%%%%%%%%%%%%%%% #
+# # --     SLIDE 45    -- #
+# # %%%%%%%%%%%%%%%%%%%%% #
+# def create_stars(original_function):
+#     def wrap_create_stars(*args, **kwargs):
+#         print("*" * 30)
+#         original_function(*args, **kwargs)
+#         print("*" * 30)
+
+#     return wrap_create_stars
+
+
+# def create_dashes(original_function):
+#     def wrap_create_dashes(*args, **kwargs):
+#         print("-" * 30)
+#         original_function(*args, **kwargs)
+#         print("-" * 30)
+
+#     return wrap_create_dashes
+
+
+# @create_stars
+# @create_dashes
+# def display_hello():
+#     print("Hello")
+
+
+# display_hello()
+
+# # %%%%%%%%%%%%%%%%%%%%% #
+# # --     SLIDE 46    -- #
+# # %%%%%%%%%%%%%%%%%%%%% #
+# import functools
+
+
+# def decorate(original_function):
+#     @functools.wraps(original_function)
+#     def wrap_decorate(*args):
+#         print("~*" * 10)
+#         original_function(*args)
+#         print("~*" * 10)
+
+#     return wrap_decorate
+
+
+# @decorate
+# def greet():
+#     """Print 'Hello'."""
+#     print("Hello!")
+
+
+# print(greet.__name__)  # greet
+# print(greet.__doc__)  # Print 'Hello'.
+# print(greet.__module__)  # __main__
+
+# # %%%%%%%%%%%%%%%%%%%%% #
+# # --     SLIDE 47    -- #
+# # %%%%%%%%%%%%%%%%%%%%% #
+# import time
+# import functools
+
+# def timer(original_function):
+#     @functools.wraps(original_function)
+#     def wrap_timer(*args):
+#         start_time = time.perf_counter()  # 1
+#         value = original_function(*args)
+#         end_time = time.perf_counter()  # 2
+#         run_time = end_time - start_time  # 3
+#         print(f"Finished {original_function.__name__!r} in {run_time:.4f} secs")
+#         return value
+
+#     return wrap_timer
+
+
+# @timer
+# def waste_some_time(num_times):
+#     for _ in range(num_times):
+#         sum([i**2 for i in range(10000)])
+
+
+# waste_some_time(1000)
+
+# # %%%%%%%%%%%%%%%%%%%%% #
+# # --     SLIDE 48    -- #
+# # %%%%%%%%%%%%%%%%%%%%% #
+# import time
+# import functools
+
+
+# def slow_down(original_function):
+#     """Sleep 1 second before calling the function"""
+
+#     @functools.wraps(original_function)
+#     def wrap_slow_down(*args):
+#         time.sleep(1)
+#         return original_function(*args)
+
+#     return wrap_slow_down
+
+
+# @slow_down
+# def countdown(from_number):
+#     if from_number < 1:
+#         print("Liftoff!")
+#     else:
+#         print(from_number)
+#         countdown(from_number - 1)
+
+
+# countdown(3)
+
+# # %%%%%%%%%%%%%%%%%%%%% #
+# # --     SLIDE 49    -- #
+# # %%%%%%%%%%%%%%%%%%%%% #
+
+# -- exercise1 -- #
+# @strong
+# @emphasis
+# def greet():
+#     return "Hello"
+
+
+# print(greet())  # <strong><em>Hello</em></strong>
+
+# -- exercise2 -- #
+# @count_calls
+# def greet():
+#   print 'Hello'
+
+# greet() # call 1 of 'greet'
+#         # Hello
+# greet() # call 2 of 'greet'
+#         # Hello
+
+# # %%%%%%%%%%%%%%%%%%%%% #
+# # --     SLIDE 50    -- #
+# # %%%%%%%%%%%%%%%%%%%%% #
+# from functools import partial
+
+
+# def multiply(x, y):
+#     return x * y
+
+# # Create a new function that multiplies by 2
+# double = partial(multiply, 2)
+
+# # Now you can just pass one argument to double
+# print(double(4))  # 8
+# print(double(5))  # 10
+
+# # # %%%%%%%%%%%%%%%%%%%%% #
+# # # --     SLIDE 51    -- #
+# # # %%%%%%%%%%%%%%%%%%%%% #
+# from functools import partial
+
+
+# def log(message, level):
+#     levels = {"DEBUG": 10, "INFO": 20, "ERROR": 30}
+#     print(f"[{level} - {levels[level]}]: {message}")
+
+
+# # Creating partial functions for each log level
+# debug_log = partial(log, level="DEBUG")
+# info_log = partial(log, level="INFO")
+# error_log = partial(log, level="ERROR")
+
+# # Usage examples
+# debug_log("This is a debug message.")
+# info_log("This is an info message.")
+# error_log("This is an error message.")
