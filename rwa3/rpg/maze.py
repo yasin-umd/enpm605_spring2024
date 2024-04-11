@@ -1,5 +1,11 @@
 import yaml
 
+# these lines are needed to extract from config.yaml
+import sys
+import os.path
+folder = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(folder)
+file_path = os.path.join(folder, "rpg", "config.yaml")
 
 class Maze:
     """
@@ -26,9 +32,11 @@ class Maze:
         # arrows
         self._arrow_positions = None
         self._arrow_emoji = None
+        self._arrow_damage = None
         # hearts
         self._heart_positions = None
         self._heart_emoji = None
+        self._heart_boost = None
         # padlocks
         self._padlock_positions = None
         self._padlock_emoji = None
@@ -140,11 +148,13 @@ class Maze:
                 arrow_positions = data["maze"]["items"]["arrows"]["position"]
                 self._arrow_positions = [tuple(item) for item in arrow_positions]
                 self._arrow_emoji = data["maze"]["items"]["arrows"]["emoji"]
+                self._arrow_damage = data["maze"]["items"]["arrows"]["damage"]
 
                 # Retrieve the hearts
                 heart_positions = data["maze"]["items"]["hearts"]["position"]
                 self._heart_positions = [tuple(item) for item in heart_positions]
                 self._heart_emoji = data["maze"]["items"]["hearts"]["emoji"]
+                self._heart_boost = data["maze"]["items"]["hearts"]["health"]
             except yaml.YAMLError as e:
                 print(f"Error parsing YAML file: {e}")
 
@@ -171,6 +181,10 @@ class Maze:
                 print(f"Error parsing YAML file: {e}")
 
     @property
+    def cls_empty(self):
+        return self._cls_empty
+
+    @property
     def obstacle_positions(self):
         """
         The positions of the obstacles in the maze.
@@ -183,13 +197,47 @@ class Maze:
         The positions of the skeletons in the maze.
         """
         return self._skeleton_positions
+    
+    @property
+    def skeleton_emoji(self):
+        """_
+        The emoji of enemy type Skeleton
+        """
+        return self._skeleton_emoji
 
+    def remove_skeleton_position(self, position):
+        """
+        Remove a skeleton's position
+        
+        Args:
+            position (tuple): The position of the skeleton to be removed.
+        """
+        self._grid[position[0]][position[1]] = self._cls_empty
+        self._skeleton_positions.remove(tuple(position))
+        
     @property
     def dragon_positions(self):
         """
         The positions of the dragons in the maze.
         """
         return self._dragon_positions
+    
+    def remove_dragon_position(self, position):
+        """
+        Remove a skeleton's position
+        
+        Args:
+            position (tuple): The position of the dragon to be removed.
+        """
+        self._grid[position[0]][position[1]] = self._cls_empty
+        self._dragon_positions.remove(tuple(position))
+
+    @property
+    def dragon_emoji(self):
+        """_
+        The emoji of enemy type Dragon
+        """
+        return self._dragon_emoji
 
     @property
     def grid(self):
@@ -197,6 +245,13 @@ class Maze:
         The grid of the maze.
         """
         return self._grid
+    
+    @property
+    def grid_size(self):
+        """
+        The grid size of the maze.
+        """
+        return self._grid_size
 
     @property
     def gem_positions(self):
@@ -205,6 +260,22 @@ class Maze:
         """
         return self._gem_positions
 
+    def remove_gem_position(self, position):
+        """
+        Remove a gem's position
+        
+        Args:
+            position (tuple): The position of the gem to be removed.
+        """
+        self._gem_positions.remove(position)
+    
+    @property
+    def gem_emoji(self):
+        """
+        The gem emoji
+        """
+        return self._gem_emoji
+
     @property
     def key_positions(self):
         """
@@ -212,12 +283,44 @@ class Maze:
         """
         return self._key_positions
 
+    def remove_key_position(self, position):
+        """
+        Remove a key's position
+        
+        Args:
+            position (tuple): The position of the key to be removed.
+        """
+        self._key_positions.remove(position)
+
+    @property
+    def key_emoji(self):
+        """
+        The key emoji
+        """
+        return self._key_emoji
+
     @property
     def arrow_positions(self):
         """
         The arrow items.
         """
         return self._arrow_positions
+    
+    def remove_arrow_position(self, position):
+        """
+        Remove an arrow's position
+        
+        Args:
+            position (tuple): The position of the arrow to be removed.
+        """
+        self._arrow_positions.remove(position)
+
+    @property
+    def arrow_emoji(self):
+        """
+        The arrow emoji
+        """
+        return self._arrow_emoji
 
     @property
     def heart_positions(self):
@@ -225,6 +328,22 @@ class Maze:
         The heart items.
         """
         return self._heart_positions
+    
+    def remove_heart_position(self, position):
+        """
+        Remove a heart's position
+        
+        Args:
+            position (tuple): The position of the heart to be removed.
+        """
+        self._heart_positions.remove(position)
+
+    @property
+    def heart_emoji(self):
+        """
+        The heart emoji.
+        """
+        return self._heart_emoji
 
     @property
     def padlock_positions(self):
@@ -233,6 +352,54 @@ class Maze:
         """
         return self._padlock_positions
 
+    def remove_padlock_position(self, position):
+        """
+        Remove a padlock's position
+        
+        Args:
+            position (tuple): The position of the padlock to be removed.
+        """
+        self._padlock_positions.remove(position)
+
+    @property
+    def padlock_emoji(self):
+        """
+        The padlocks emoji.
+        """
+        return self._padlock_emoji
+
+    @property
+    def player_emoji(self):
+        """
+        The player emoji
+        """
+        return self._player_emoji
+
+    def set_player_emoji(self, emoji):
+        """
+        Set a player's emoji
+        
+        Args:
+            emoji (str): The emoji of the player to be used.
+        """
+        self._player_emoji  = emoji
+
+    @property
+    def player_position(self):
+        """
+        The player position
+        """
+        return self._player_position
+
+    def set_player_position(self, position):
+        """
+        Set a player's position
+
+        Args:
+            position (list): player's new position
+        """
+        self._player_position = position
+    
     def spawn_player(self):
         """
         Spawn the player on the grid.

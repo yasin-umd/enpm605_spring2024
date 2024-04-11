@@ -1,0 +1,172 @@
+@startuml
+namespace rpg #DDDDDD {
+
+class Player{
+    -position: list
+    -direction: enum
+    +name: str = "arthur"
+    +health: int = 1000
+    +inventory: dict
+    -emoji: dict
+    -attack_power: int = 50
+    -extract_player(): cls = Player
+    +start(player:Player, maze:Maze): None
+    -print_inventory(maze:Maze, player:Player): None
+    -move(action: str, maze:Maze): None
+    -rotate(direction: str, maze:Maze): None
+    -move_forward(maze:Maze): None
+    -move_backward(maze:Maze): None
+    -calculate_new_position(direction: enum, maze:Maze): tuple
+    -is_within_bounds(position: tuple, maze:Maze): bool
+    -get_opposite_direction(direction: enum): enum
+    -attack(enemy:Enemy, damage:int): None
+    -defend(): None
+    +take_damage(damage:int): None
+    -perform_action(position: list, maze:Maze): None
+    -pick_up_item(position: list, maze:Maze): None
+    -open_padlock(position: list, maze:Maze): None
+    -use_arrow(maze:Maze): None
+    -combat(player:Player, enemy:Enemy, maze:Maze): None
+}
+enum Direction{
+    UP
+    DOWN
+    LEFT
+    RIGHT
+}
+abstract class Enemy{
+    +position: list
+    +name: str 
+    +health: int 
+    +attack_power: int 
+    +attack(player:Player, damage: int): None
+    +extract_enemy(cls:Enemy, position: list): None
+    +take_damage(damage: int): None
+}
+class Dragon{
+    +position: list
+    +name: str 
+    +health: int = 100
+    +fire_power: int
+    +attack(player:Player, damage: int): None
+    +extract_enemy(cls:Enemy, position: list)
+    +take_damage(damage: int): None
+}
+class Skeleton{
+    +position: list
+    +name: str 
+    +health: int = 100
+    +shield_power: int
+    +attack(player:Player, damage: int): None
+    +extract_enemy(cls:Enemy, position: list)
+    +take_damage(damage: int): None
+}
+class Item{
+    -item_type: enum
+    -item_position: list
+    -item_value: int     
+}
+enum Category{
+    HEART
+    PADLOCK
+    KEY
+    ARROW
+    GEM
+}
+
+class Maze{
+    -_cls_empty: str = "  "
+    -_cls_horizontal_wall: str = "──"
+    -_cls_vertical_wall: str = "│"
+    -_cls_corner: str = "┼"
+    -_file_path: str
+    -_grid_size: int 
+    -_obstacle_positions: list
+    -_obstacle_emoji: str
+    -_gem_positions: list
+    -_gem_emoji: str
+    -_key_positions: list
+    -_key_emoji: str
+    -_arrow_positions: list
+    -_arrow_emoji: str
+    -_arrow_damage: int
+    -_heart_positions: list
+    -_heart_emoji: str
+    -_heart_boost: int 
+    -_padlock_positions: list
+    -_padlock_emoji: str  
+    -_skeleton_positions: list
+    -_skeleton_emoji: str 
+    -_dragon_positions: list
+    -_dragon_emoji: str 
+    -_player_position: list
+    -_player_emoji: str 
+    -extract_grid_size(): None
+    -extract_player(): None
+    -extract_obstacles(): None
+    -extract_items(): None
+    -extract_enemies(): None
+    -grid: list
+    -spawn_components(): None
+    -extract_grid_size(): None
+    -extract_player(): None
+    -extract_obstacles(): None
+    -extract_items(): None
+    -extract_enemies(): None
+    +cls_empty(): str
+    +obstacle_positions(): list
+    +skeleton_positions(): list
+    +skeleton_emoji(): str 
+    +remove_skeleton_position(position: list): None
+    +dragon_positions(): list
+    +remove_dragon_position(position: list): None
+    +dragon_emoji(): str 
+    +grid(): list
+    +grid_size(): int
+    +gem_positions(): list
+    +remove_gem_position(position: list): None
+    +gem_emoji(): str 
+    +key_positions(): list
+    +remove_key_position(position: list): None
+    +key_emoji(): str 
+    +arrow_positions(): list
+    +remove_arrow_position(position: list): None
+    +arrow_emoji(): str 
+    +heart_positions(): list
+    +remove_heart_position(position: list): None
+    +heart_emoji(): str 
+    +padlock_positions(): list
+    +remove_padlock_position(position: list): None
+    +padlock_emoji(): str 
+    +player_emoji(): str 
+    +set_player_emoji(emoji: str): None
+    +player_position(): list
+    +set_player_position(position: tuple): None
+    +spawn_player(): None
+    -spawn_obstacles(): None
+    -space_gems(): None
+    -space_enemies(): None
+    -spawn_padlocks(): None
+    -spawn_keys(): None
+    -spawn_arrows(): None
+    -spawn_hearts(): None
+    +print_maze(): None
+}
+Maze *-- Enemy
+Maze *-- Item
+Maze *-- Player
+Enemy *-- Dragon
+Enemy *-- Skeleton
+Item *-- Category
+Player *-- Direction
+
+Player - Item: collects >
+Player - Enemy: attacks >
+Player - Enemy: defends >
+Enemy - Player: attacks >
+Maze - Enemy: spawns >
+Maze - Item: spawns >
+Maze - Player: spawns >
+Player - Maze: travels >
+}
+@enduml
